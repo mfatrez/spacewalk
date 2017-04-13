@@ -1,0 +1,6 @@
+#ChannelName|RepoName|URL
+SLE11-SP3-SAP-Pool|repo-sle11-sp3-sap-pool|http://127.0.0.1/repo/$RCE/SLE11-SP3-SAP-Pool/sle-11-x86_64/
+SLE11-SP3-SAP-Updates|repo-sle11-sp3-sap-updates|http://127.0.0.1/repo/$RCE/SLE11-SP3-SAP-Updates/sle-11-x86_64/
+SLE11-HAE-SP3-SAP-Pool|repo-sle11-hae-sp3-pool|http://127.0.0.1/repo/$RCE/SLE11-HAE-SP3-Pool/sle-11-x86_64/
+SLE11-HAE-SP3-SAP-Updates|repo-sle11-hae-sp3-updates|http://127.0.0.1/repo/$RCE/SLE11-HAE-SP3-Updates/sle-11-x86_64/
+SLE11-SP3-SAP-Security-Module|repo-sle11-security-module|http://127.0.0.1/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/
