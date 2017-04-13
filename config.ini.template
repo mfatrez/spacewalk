@@ -1,0 +1,12 @@
+[spacewalk]
+url            = https://localhost/rpc/api
+login          = admin
+password       = admin
+
+[alerting]
+max_days       = 365
+
+[smtp]
+email_sender   = email_sender@send.to
+email_copy     = email_copy@send.to
+smtp_service   = localhost
