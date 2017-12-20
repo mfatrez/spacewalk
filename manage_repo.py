@@ -46,18 +46,18 @@ def checkParam(c, e, r):
 def getSuseRepo():
     suse_top_repo = []
 
-    suse_channels = client.channel.listAllChannels(key)
+    suse_channels = client.channel.listVendorChannels(key)
     for suse_channel in suse_channels:
         channel_info = client.channel.software.getDetails(key, suse_channel['label'])
 
-        if re.match(r"^sle[0-9s]", channel_info['label']) and channel_info['parent_channel_label'] == "":
+        if channel_info['parent_channel_label'] == "":
             suse_top_repo.append(suse_channel['label'])
     return suse_top_repo
 
 def getAllSuseRepoFromBaseChannel(c):
     suse_top_repo = []
 
-    suse_channels = client.channel.listAllChannels(key)
+    suse_channels = client.channel.listVendorChannels(key)
     for suse_channel in suse_channels:
         channel_info = client.channel.software.getDetails(key, suse_channel['label'])
 
