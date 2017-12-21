@@ -57,7 +57,7 @@ def getCustomRepo():
                     delta = (time.mktime(date_now)-time.mktime(date_repo)) / 86400
                     logging.debug("Check how many days have parent channel {}".format(channel['label']))
 
-                    if delta > max_days:
+                    if int(delta) > int(max_days):
                         logging.debug("Parent channel have more than {} days Sending email to {} for {}".format(max_days, email, channel['label']))
                         list_hosts = client.channel.software.listSubscribedSystems(key, channel['label'])
                         sendmail(email, channel['label'], list_hosts)
