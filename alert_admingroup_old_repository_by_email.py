@@ -93,6 +93,8 @@ def sendmail(email, channel_label, list_hosts):
       smtpObj = smtplib.SMTP(smtp_service)
       smtpObj.sendmail(email_sender, receivers, message)
       logging.debug("Email sent to {} for repository {}".format(email, channel_label))
+      time.sleep(5)
+      logging.debug("Pausing 5 secondes")
     except SMTPException:
       logging.debug("Unable to send email")
 
