@@ -26,27 +26,31 @@ def usage():
     print '    report_by_group.py -g group'
 
 def createReport(group_name):
+    logging.debug("METHOD : createReport - START")
     list_systems_in_group = ""
 
     try:
         list_systems_in_group = client.systemgroup.listSystems(key, group_name)
     except xmlrpclib.Fault:
+        logging.debug("METHOD : createReport - EXCEPTION : Unable to get info from group")
         print "Unable to get info from group"
-        logging.debug("Unable to get info from group")
 
+    logging.debug("METHOD : createReport - Print header - START")
     print "-------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     print "|{:^161}|".format(group_name)
     print "-------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     print "| Hostname                                                     | R |  S-P  |  B-P  |  E-P  |  O-P  | Channel Labels                                               |"
     print "-------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    logging.debug("METHOD : createReport - Print header - END")
 
     for system in list_systems_in_group:
+         logging.debug("METHOD : createReport - Get info from : %s - %s" % (system['id'], system['hostname']))
+
          security_patch = len(client.system.getRelevantErrataByType(key, system['id'], "Security Advisory"))
          bug_patch = len(client.system.getRelevantErrataByType(key, system['id'], "Bug Fix Advisory"))
          enhancement_patch = len(client.system.getRelevantErrataByType(key, system['id'], "Product Enhancement Advisory"))
          outdated_packages = sorted(client.system.getId(key, system['hostname']), key=lambda sort_date: sort_date['last_checkin'])[-1]['outdated_pkg_count']
          repository_name = client.system.getSubscribedBaseChannel(key, system['id'])['label']
-
          osa_status = sorted(client.system.getId(key, system['hostname']), key=lambda sort_date: sort_date['last_checkin'])[-1]['last_checkin']
 
          osa = " "
@@ -61,6 +65,7 @@ def createReport(group_name):
     print " B-P -> Bug Patch"
     print " E-P -> Enhance Patch"
     print " O-P -> Outdated Package"
+    logging.debug("METHOD : createReport - END")
 
 def main():
     debug = 0
