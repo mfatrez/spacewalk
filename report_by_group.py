@@ -39,7 +39,7 @@ def createReport(group_name):
     print "-------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     print "| Hostname                                                     | R |  S-P  |  B-P  |  E-P  |  O-P  | Channel Labels                                               |"
     print "-------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-#            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX | AAAAA | BBBBB | CCCCC | DDDDD | FFFF
+
     for system in list_systems_in_group:
          security_patch = len(client.system.getRelevantErrataByType(key, system['id'], "Security Advisory"))
          bug_patch = len(client.system.getRelevantErrataByType(key, system['id'], "Bug Fix Advisory"))
@@ -61,10 +61,6 @@ def createReport(group_name):
     print " B-P -> Bug Patch"
     print " E-P -> Enhance Patch"
     print " O-P -> Outdated Package"
-
-#name	Security Patches	Bug Patches	Enhancement Patches	Outdated Packages	Channel Labels
-#clplincft01.intra-coliposte.fr	200	146	9	331	coliposte-20180102-sles11-sp4-pool-x86_64
-#clplinlad60.intra-coliposte.fr	192	146	9	328	coliposte-20180102-sles11-sp4-pool-x86_64
 
 def main():
     debug = 0
