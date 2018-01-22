@@ -17,14 +17,16 @@ date_repo = datetime.datetime.now().strftime('%Y%m%d')
 
 def usage():
     print 'This script create custom repository for SuseManager'
-    print 'Usage: %s [-h] [-l] [-C -c client -e email -r repository] [-D -c client-YYYYMMDD -r repository]' % sys.argv[0]
+    print 'Usage: %s [-h] [-l] [-L] [-C -c client -e email -r repository] [-D -c client-YYYYMMDD -r repository]' % sys.argv[0]
     print '    -h, --help          this help'
-    print '    -l, --list          list Suse repository'
+    print '    -l, --list-vendor   list Suse repository'
+    print '    -L, --list-custom   list Custom repository'
     print '    -C, --create        Create repository'
     print '    -D, --delete        delete custom repository'
     print '    -c, --client=       name of the client'
     print '    -e, --email=        email of sap administrator'
     print '    -r, --repository=   top level repository to clone'
+    print '    -d, --debug         debug mode'
     print ' ex :'
     print '    manage_repo.py -C -c myrepo -e email@sender.to -r sle11-sp4-sap-pool'
     print '    manage_repo.py -D -c myrepo-20161228 -r sle11-sp4-sap-pool'
@@ -54,6 +56,17 @@ def getSuseRepo():
             suse_top_repo.append(suse_channel['label'])
     return suse_top_repo
 
+def getCustomRepo():
+    suse_top_repo = []
+
+    suse_channels = client.channel.listMyChannels(key)
+    for suse_channel in suse_channels:
+        channel_info = client.channel.software.getDetails(key, suse_channel['label'])
+
+        if channel_info['parent_channel_label'] == "":
+            suse_top_repo.append(suse_channel['label'])
+    return suse_top_repo
+
 def getAllSuseRepoFromBaseChannel(c):
     suse_top_repo = []
 
@@ -72,6 +85,12 @@ def getSuseRepoShow():
     print "List of top level Suse Repository :"
     suse_repo = getSuseRepo()
     for channel in suse_repo:
+       print "    - " + channel
+
+def getCustomRepoShow():
+    print "List of top level Custom Repository :"
+    custom_repo = getCustomRepo()
+    for channel in custom_repo:
        print "    - " + channel
 
 def createCustomRepo(c, e, r):
@@ -138,7 +157,7 @@ def main():
     delete = 0
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hldCDc:e:r:", ["help", "list", "debug", "create", "delete", "client=", "email=", "repository="])
+        opts, args = getopt.getopt(sys.argv[1:], "hlLdCDc:e:r:", ["help", "list-vendor", "list-custom", "debug", "create", "delete", "client=", "email=", "repository="])
     except getopt.GetoptError as err:
         print str(err)
         usage()
@@ -148,8 +167,11 @@ def main():
         if k in ("-h", "--help"):
             usage()
             sys.exit()
-        elif k in ("-l", "--list"):
+        elif k in ("-l", "--list-vendor"):
             getSuseRepoShow()
+            sys.exit()
+        elif k in ("-L", "--list-custom"):
+            getCustomRepoShow()
             sys.exit()
         elif k in ("-d", "--debug"):
             debug = 1
