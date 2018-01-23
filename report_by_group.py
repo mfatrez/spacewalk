@@ -26,7 +26,7 @@ def usage():
     print '    report_by_group.py -g group'
 
 def createReport(group_name):
-    logging.debug("METHOD : createReport - START")
+    logging.debug("METHOD START : createReport")
     list_systems_in_group = ""
 
     try:
@@ -50,14 +50,14 @@ def createReport(group_name):
          bug_patch = len(client.system.getRelevantErrataByType(key, system['id'], "Bug Fix Advisory"))
          enhancement_patch = len(client.system.getRelevantErrataByType(key, system['id'], "Product Enhancement Advisory"))
          outdated_packages = sorted(client.system.getId(key, system['hostname']), key=lambda sort_date: sort_date['last_checkin'])[-1]['outdated_pkg_count']
-         repository_name = client.system.getSubscribedBaseChannel(key, system['id'])['label']
+         repository = client.system.getSubscribedBaseChannel(key, system['id'])
          osa_status = sorted(client.system.getId(key, system['hostname']), key=lambda sort_date: sort_date['last_checkin'])[-1]['last_checkin']
-
          osa = " "
          if osa_status < yesterday:
              osa = "X"
 
-         print "| {:<60} | {:<1} | {:>5} | {:>5} | {:>5} | {:>5} | {:<60} |".format(system['hostname'], osa, security_patch, bug_patch, enhancement_patch, outdated_packages, repository_name)
+         print "| {:<60} | {:<1} | {:>5} | {:>5} | {:>5} | {:>5} | {:<60} |".format(system['hostname'], osa, security_patch, bug_patch, enhancement_patch, outdated_packages, repository['label'])
+         print repository['maintainer_email']
 
     print "-------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     print " R   -> Reachable"
@@ -65,7 +65,7 @@ def createReport(group_name):
     print " B-P -> Bug Patch"
     print " E-P -> Enhance Patch"
     print " O-P -> Outdated Package"
-    logging.debug("METHOD : createReport - END")
+    logging.debug("METHOD END : createReport")
 
 def main():
     debug = 0
